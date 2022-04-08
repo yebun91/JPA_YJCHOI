@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.js"></script>
+</head>
+<body>
+<input><button type=""></button>
+<table id="myTable" class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Age</th>
+        <th>Hobby</th>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="member : ${memberList}">
+            <td th:text="${member.id}"></td>
+            <td th:text="${member.age}"></td>
+            <td th:text="${member.hobby}"></td>
+            <td th:text="${member.name}"></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+</html>

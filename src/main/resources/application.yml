@@ -1,0 +1,33 @@
+spring:
+  # database
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://52.78.54.86:54320/test_database
+    username: postgres
+    password: postgres
+
+  # JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: create # When you launch the application for the first time - switch "none" at "create"
+      database: postgresql
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      open-in-view: true
+      generate-ddl: true
+      format_sql: true
+      show_sql: true
+
+  # Mybatis properties
+  mybatis:
+    mapper-locations: classpath:mapper/*.xml
+    configuration:
+      map-underscore-to-camel-case: true
+  
+  #정적리소스 서버 재시작 없이 바로 반영
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+    thymeleaf:
+      cache: false
