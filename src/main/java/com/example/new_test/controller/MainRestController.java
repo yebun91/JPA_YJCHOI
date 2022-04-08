@@ -21,12 +21,12 @@ public class MainRestController {
         if(name == "" || name.equals("all")){
             memberList = memberRepository.findAll();
         }else{
-            memberList = memberRepository.findByNameLike(name);
+            memberList = memberRepository.findByNameContains(name);
         }
         return memberList;
     }
 
-    /*@GetMapping("/search")
+/*    @GetMapping("/search")
     public Column search(String name, Column dto, @RequestBody MultiValueMap<String, String> formData) {
         List<Member> memberList;
         if(name == "" || name.equals("all")){
