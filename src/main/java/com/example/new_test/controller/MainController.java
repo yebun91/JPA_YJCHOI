@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @AllArgsConstructor
 public class MainController {
 
-    private MemberRepository memberRepository;
-
     @RequestMapping("/")
-    public String main(Model model){
-        model.addAttribute("memberList", memberRepository.findAll());
+    public String main(){
         return "index";
     }
 

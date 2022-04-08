@@ -9,30 +9,45 @@
           href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.js"></script>
 </head>
-<body>
-<input><button type=""></button>
-<table id="myTable" class="table table-bordered">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Age</th>
-        <th>Hobby</th>
-        <th>Name</th>
-    </tr>
-    </thead>
-    <tbody>
-        <tr th:each="member : ${memberList}">
-            <td th:text="${member.id}"></td>
-            <td th:text="${member.age}"></td>
-            <td th:text="${member.hobby}"></td>
-            <td th:text="${member.name}"></td>
-        </tr>
-    </tbody>
-</table>
-</body>
 <script>
+    let table;
     $(document).ready(function () {
-        $('#myTable').DataTable();
+        search();
     });
+    function search(){
+        const search_test = $('#search_text').val();
+        table = $('#myTable').DataTable({
+            bDestroy: true,
+            serverSide: true,
+            processing: true,
+            ajax: {
+                url: '/search',
+                type: 'GET',
+                data: {"name" : search_test},
+                dataSrc: ""
+            },
+            columns: [
+                {data: "id"},
+                {data: "name"},
+                {data: "age"},
+                {data: "hobby"},
+            ],
+        });
+    }
 </script>
+<body>
+    <input type="text" id="search_text" onKeyPress="if( event.keyCode==13 ){search()}">
+    <button type="button" onclick="search()">검색</button>
+    <table id="myTable" class="display" style="width:100%">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Hobby</th>
+        </tr>
+        </thead>
+        </tbody>
+    </table>
+</body>
 </html>
