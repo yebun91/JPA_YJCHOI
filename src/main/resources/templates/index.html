@@ -12,20 +12,24 @@
 <script>
     let table;
     $(document).ready(function () {
-        search();
-    });
-    function search(){
-        const search_test = $('#search_text').val();
         table = $('#myTable').DataTable({
-            bDestroy: true,
-            serverSide: true,
-            processing: true,
+            serverSide: true, //데이터 서버사이드 처리 활성화.
+            processing: true, //서버측 처리를 위해 테이블이 처리중 일때 '처리 중' 표시기의 표시를 활성화 또는 비활성화 한다.
+            pageLength: 5, //한 페이지에 표시할 행의 개수
             ajax: {
                 url: '/search',
-                type: 'GET',
+                // type: 'GET',
+                type: 'POST',
                 contentType: 'application/json',
-                data: {"name" : search_test},
-                dataSrc: ""
+                dataType: 'json',
+                data: function(d){
+                    // d.name = $('#search_text').val();
+                    // const data = d.name;
+                    // return data;
+                    Object.assign(d,{"data": {"name": $('#search_text').val()}});
+                    return JSON.stringify(d);
+                },
+                //dataSrc: ""
             },
             columns: [
                 {data: "id"},
@@ -34,11 +38,14 @@
                 {data: "hobby"},
             ],
         });
-    }
+    });
+    $("#search").on("click", function() {
+        table.ajax.reload();
+    });
 </script>
 <body>
-    <input type="text" id="search_text" onKeyPress="if( event.keyCode==13 ){search()}">
-    <button type="button" onclick="search()">검색</button>
+    <input type="text" id="search_text" onKeyPress="if( event.keyCode==13 ){table.ajax.reload()}">
+    <button type="button" id="search">검색</button>
     <table id="myTable" class="display" style="width:100%">
         <thead>
         <tr>
@@ -48,7 +55,6 @@
             <th>Hobby</th>
         </tr>
         </thead>
-        </tbody>
     </table>
 </body>
 </html>

@@ -1,25 +1,20 @@
 package com.example.new_test.entity;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Data
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Column {
-    private int draw;
-    private int recordsTotal;
-    private int recordsFiltered;
-
-    private List data;
-
-    public List getData(){
-        if(CollectionUtils.isEmpty(data)){
-            data = new ArrayList();
-        }
-        return data;
-    }
-
+    private String data;
+    private String name;
+    private boolean searchable;
+    private boolean orderable;
+    private Map<DataTablesInput.SearchCriterias, String> search;
 }
