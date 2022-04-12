@@ -16,10 +16,4 @@ public class DataTablesOutput {
     private int recordsFiltered;
     private List<MemberDto> data;
 
-    public List<MemberDto> getData(){
-        if(CollectionUtils.isEmpty(data)){
-            data = new ArrayList();
-        }
-        return data;
-    }
 }
