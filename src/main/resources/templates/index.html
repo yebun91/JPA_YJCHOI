@@ -11,7 +11,6 @@
 </head>
 <script>
     let table;
-    let param_line = "";
 
     $(document).ready(function () {
         table = $('#myTable').DataTable({
@@ -21,15 +20,13 @@
             searching: false,
             ajax: {
                 url: '/search',
-                type: 'POST',
+                type: 'GET',
                 contentType: 'application/json',
                 dataType: 'json',
-
                 data: function(d){
-                    Object.assign(d,{"data": {"name": $('#search_text').val()}});
-                    console.log(d);
-                    return JSON.stringify(d);
+                  d.search = $('#search_text').val();
                 },
+              dataSrc: "",
             },
             columns: [
                 {data: "id"},
