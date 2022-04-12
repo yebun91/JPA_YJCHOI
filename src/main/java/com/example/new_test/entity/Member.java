@@ -12,14 +12,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(schema= "test_schema", name= "test_member")
-@DynamicUpdate
-@DynamicInsert
 @Builder
 public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     private Long memId;
 
     private int age;

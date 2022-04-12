@@ -9,7 +9,6 @@ import java.util.Map;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class DataTablesInput {
     private HashMap<String,String> data;
     private int draw;
