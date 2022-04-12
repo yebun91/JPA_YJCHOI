@@ -18,20 +18,8 @@ public class MainRestController {
     private MemberRepository memberRepository;
     private MemberMapper memberMybatiseRepository;
 
-
-/*    @GetMapping("/search")
-    public List<Member> search(String name) throws Exception {
-        List<Member> memberList;
-        if (name.equals("") || name.equals("all")) {
-            memberList = memberRepository.findAll();
-        } else {
-            memberList = memberRepository.findByNameContains(name);
-        }
-        return memberList;
-    }*/
-
     @PostMapping("/search")
-    public DataTablesOutput search(DataTablesOutput dataTablesOutput, @RequestBody DataTablesInput requestBody) throws Exception {
+    public DataTablesOutput search(@RequestBody DataTablesInput requestBody) {
         List<MemberDto> data;
 
         int draw = requestBody.getDraw();
@@ -39,18 +27,15 @@ public class MainRestController {
         int length = requestBody.getLength();
         String search = requestBody.getData().get("name");
         data = memberMybatiseRepository.findData(start, length, search);
-        int total;
-        if(search.equals("")){
-            total = memberRepository.findAll().size();
-        }else{
-            total = memberMybatiseRepository.findData(start, memberRepository.findAll().size(), search).size();
-        }
+        int total = memberMybatiseRepository.findDataTotalCount(search);
 
-        dataTablesOutput.setDraw(draw);
-        dataTablesOutput.setData(data);
-        dataTablesOutput.setRecordsFiltered(total);
-        dataTablesOutput.setRecordsTotal(total);
+        DataTablesOutput output = DataTablesOutput.builder()
+                        .data(data)
+                        .draw(draw)
+                        .recordsFiltered(total)
+                        .recordsTotal(total)
+                        .build();
 
-        return dataTablesOutput;
+        return output;
     }
 }

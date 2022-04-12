@@ -14,8 +14,11 @@
         LIMIT #{length} OFFSET #{start}
     </select>
 
-    <select id="findAll" resultMap="MemberMap">
-        SELECT * FROM test_schema.test_member
+    <select id="findDataTotalCount" resultType="Integer">
+        SELECT COUNT(mem_id) FROM test_schema.test_member
+        <if test="search != null or !search.equals('')">
+            WHERE name LIKE CONCAT('%', #{search}, '%')
+        </if>
     </select>
 </mapper>
 
