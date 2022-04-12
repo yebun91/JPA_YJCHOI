@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(schema= "test_schema", name= "test_member")
+@Table(schema= "yjchoi", name= "member")
 @Builder
 public class Member {
 

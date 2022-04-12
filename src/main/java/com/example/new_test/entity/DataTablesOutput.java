@@ -6,9 +6,6 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-//@NoArgsConstructor
-//@Getter
-//@Setter
 @Data
 @Builder
 public class DataTablesOutput {
@@ -16,6 +13,4 @@ public class DataTablesOutput {
     private int recordsTotal;
     private int recordsFiltered;
     private List<MemberDto> data;
-
-
 }
