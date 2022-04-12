@@ -17,7 +17,6 @@ configurations {
 
 repositories {
     maven { url 'https://repo.spring.io/release' }
-//    maven { url "https://www.datanucleus.org/downloads/maven2/"}
     mavenCentral()
 }
 

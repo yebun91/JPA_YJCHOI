@@ -14,9 +14,9 @@ public class DataTablesInput {
     private int draw;
     private long start;
     private int length;
-    private Map<SearchCriterias, String> search;
     private List<Map<OrderCriterias, String>> order;
     private List<Column> columns;
+
     public enum SearchCriterias {value, regex}
     public enum OrderCriterias {column, dir}
 }

@@ -10,6 +10,8 @@
 
     <select id="findData" resultMap="MemberMap">
         SELECT * FROM test_schema.test_member
+        WHERE name LIKE CONCAT('%', #{search}, '%')
+        LIMIT #{length} OFFSET #{start}
     </select>
 
     <select id="findAll" resultMap="MemberMap">

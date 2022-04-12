@@ -11,25 +11,25 @@
 </head>
 <script>
     let table;
+    let param_line = "";
+
     $(document).ready(function () {
         table = $('#myTable').DataTable({
             serverSide: true, //데이터 서버사이드 처리 활성화.
             processing: true, //서버측 처리를 위해 테이블이 처리중 일때 '처리 중' 표시기의 표시를 활성화 또는 비활성화 한다.
-            pageLength: 5, //한 페이지에 표시할 행의 개수
+            pageLength: 15, //한 페이지에 표시할 행의 개수
+            searching: false,
             ajax: {
                 url: '/search',
-                // type: 'GET',
                 type: 'POST',
                 contentType: 'application/json',
                 dataType: 'json',
+
                 data: function(d){
-                    // d.name = $('#search_text').val();
-                    // const data = d.name;
-                    // return data;
                     Object.assign(d,{"data": {"name": $('#search_text').val()}});
+                    console.log(d);
                     return JSON.stringify(d);
                 },
-                //dataSrc: ""
             },
             columns: [
                 {data: "id"},

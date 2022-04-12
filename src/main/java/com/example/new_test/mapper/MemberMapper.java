@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface MemberMapper {
 @Mapper
-    List<MemberDto> findData(Long start, int length);
+    List<MemberDto> findData(Long start, int length, String search);
     List<MemberDto> findAll();
 }
