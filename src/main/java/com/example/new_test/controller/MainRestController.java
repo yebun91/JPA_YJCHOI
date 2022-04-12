@@ -11,8 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 @RestController
 @AllArgsConstructor
@@ -22,26 +20,20 @@ public class MainRestController {
 
     @PostMapping("/search")
     public DataTablesOutput search(@RequestBody DataTablesInput requestBody ) {
-
         int draw = requestBody.getDraw();
         int length = requestBody.getLength();
         int start = requestBody.getStart();
         String search = requestBody.getData().get("name");
         int page = start / length;
-
         Pageable pageable = PageRequest.of(page, length, Sort.Direction.ASC, "id");
         Page<Member> data = memberRepository.findByNameContains(search, pageable);
-
         int total = Long.valueOf(data.getTotalElements()).intValue();
-
         DataTablesOutput output = DataTablesOutput.builder()
                 .draw(draw)
                 .recordsFiltered(total)
                 .recordsTotal(total)
-                .data(data.toList())
+                .data(data.getContent())
                 .build();
-
         return output;
-
     }
 }

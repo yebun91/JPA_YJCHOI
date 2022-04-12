@@ -15,5 +15,4 @@ public class DataTablesOutput {
     private int recordsTotal;
     private int recordsFiltered;
     private List<Member> data;
-
 }
