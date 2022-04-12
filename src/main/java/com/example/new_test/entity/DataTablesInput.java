@@ -12,7 +12,7 @@ import java.util.Map;
 public class DataTablesInput {
     private HashMap<String,String> data;
     private int draw;
-    private long start;
+    private int start;
     private int length;
     private List<Map<OrderCriterias, String>> order;
     private List<Column> columns;

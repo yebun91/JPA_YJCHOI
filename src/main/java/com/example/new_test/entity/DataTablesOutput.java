@@ -1,18 +1,19 @@
 package com.example.new_test.entity;
 
 import lombok.*;
-import org.springframework.util.CollectionUtils;
+import org.springframework.data.domain.Page;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
+@Builder
+//@NoArgsConstructor
+//@Getter
+//@Setter
 public class DataTablesOutput {
     private int draw;
     private int recordsTotal;
     private int recordsFiltered;
-    private List<MemberDto> data;
+    private List<Member> data;
 
 }
