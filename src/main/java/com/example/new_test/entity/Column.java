@@ -10,7 +10,6 @@ import java.util.Map;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class Column {
     private String data;
     private String name;

@@ -9,7 +9,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class DataTablesOutput {
     private int draw;
     private int recordsTotal;
