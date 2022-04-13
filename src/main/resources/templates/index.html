@@ -11,22 +11,38 @@
 </head>
 <script>
     let table;
-    let param_line = "";
+    let searchWhere;
 
     $(document).ready(function () {
+        searchWhere = $('searchWhere option:selected').val();
+
         table = $('#myTable').DataTable({
             serverSide: true, //데이터 서버사이드 처리 활성화.
             processing: true, //서버측 처리를 위해 테이블이 처리중 일때 '처리 중' 표시기의 표시를 활성화 또는 비활성화 한다.
             pageLength: 10, //한 페이지에 표시할 행의 개수
-            searching: false,
+            ordering: true, // 컬럼별 정렬기능
+            language: {
+                emptyTable: "데이터가 없습니다.",
+                lengthMenu: "페이지당 _MENU_ 개씩 보기",
+                info: "현재 _START_ - _END_ / _TOTAL_건",
+                infoEmpty: "데이터 없음",
+                infoFiltered: "( _MAX_건의 데이터에서 필터링됨 )",
+                search: "",
+                zeroRecords: "일치하는 데이터가 없습니다.",
+                loadingRecords: "로딩중...",
+                processing: "잠시만 기다려 주세요.",
+                paginate: {
+                    next: "다음",
+                    previous: "이전",
+                },
+            },
             ajax: {
                 url: '/search',
                 type: 'POST',
                 contentType: 'application/json',
                 dataType: 'json',
-
                 data: function(d){
-                    Object.assign(d,{"data": {"name": $('#search_text').val()}});
+                    Object.assign(d,{"data": {"searchWhere": $('#searchWhere').val()}});
                     console.log(d);
                     return JSON.stringify(d);
                 },
@@ -42,10 +58,18 @@
     $("#search").on("click", function() {
         table.ajax.reload();
     });
+
+    $("#searchWhere").change(function(){
+        console.log($(this).val()); //value값 가져오기
+        searchWhere = $(this).val();
+    });
 </script>
 <body>
-    <input type="text" id="search_text" onKeyPress="if( event.keyCode==13 ){table.ajax.reload()}">
-    <button type="button" id="search">검색</button>
+    <select name="searchWhere" id="searchWhere" style="float: right">
+        <option value="name" selected>name</option>
+        <option value="age">age</option>
+        <option value="hobby">hobby</option>
+    </select>
     <table id="myTable" class="display" style="width:100%">
         <thead>
         <tr>
