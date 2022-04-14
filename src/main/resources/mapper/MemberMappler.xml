@@ -10,7 +10,7 @@
 
     <select id="findData" resultMap="MemberMap">
         SELECT * FROM yjchoi.member
-        WHERE ${searchWhere} LIKE CONCAT('%', #{search}, '%')
+        WHERE ${searchType} LIKE CONCAT('%', #{search}, '%')
         ORDER BY ${culumn} ${order}
         LIMIT #{length} OFFSET #{start}
     </select>
@@ -18,7 +18,7 @@
     <select id="findDataTotalCount" resultType="Integer">
         SELECT COUNT(id) FROM yjchoi.member
         <if test="search != null and !search.equals('')">
-            WHERE ${searchWhere} LIKE CONCAT('%', #{search}, '%')
+            WHERE ${searchType} LIKE CONCAT('%', #{search}, '%')
         </if>
     </select>
 </mapper>

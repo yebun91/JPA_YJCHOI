@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @AllArgsConstructor
 public class MainRestController {
@@ -35,12 +34,12 @@ public class MainRestController {
         String order = requestBody.getOrder().get(0).get(DataTablesInput.OrderCriterias.dir);
 
         // 무엇을 기준으로 검색할 것인지  where id = '뫄뫄' 의 id
-        String searchWhere = requestBody.getData().get("searchWhere");
+        String searchType = requestBody.getData().get("searchType");
 
-        // System.out.println("search : "+search+", culumn : "+culumn+", order : "+order+", searchWhere : "+searchWhere);
+        System.out.println("search : "+search+", culumn : "+culumn+", order : "+order+", searchType : "+searchType);
 
-        List<MemberDto> data = memberMybatiseRepository.findData(start, length, search, culumn, order, searchWhere);
-        int total = memberMybatiseRepository.findDataTotalCount(search, searchWhere);
+        List<MemberDto> data = memberMybatiseRepository.findData(start, length, search, culumn, order, searchType);
+        int total = memberMybatiseRepository.findDataTotalCount(search, searchType);
 
         DataTablesOutput output = DataTablesOutput.builder()
                         .data(data)

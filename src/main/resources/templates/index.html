@@ -11,11 +11,11 @@
 </head>
 <script>
     let table;
-    let searchWhere;
+    let searchType;
 
     $(document).ready(function () {
-        searchWhere = $('searchWhere option:selected').val();
-
+        searchType = $('#searchType option:selected').val();
+        console.log("searchType 찍힘 : "+searchType);
         table = $('#myTable').DataTable({
             serverSide: true, //데이터 서버사이드 처리 활성화.
             processing: true, //서버측 처리를 위해 테이블이 처리중 일때 '처리 중' 표시기의 표시를 활성화 또는 비활성화 한다.
@@ -42,43 +42,44 @@
                 contentType: 'application/json',
                 dataType: 'json',
                 data: function(d){
-                    Object.assign(d,{"data": {"searchWhere": $('#searchWhere').val()}});
+                    Object.assign(d,{"data": {"searchType": searchType}});
                     console.log(d);
                     return JSON.stringify(d);
                 },
             },
             columns: [
-                {data: "id"},
-                {data: "name"},
-                {data: "age"},
-                {data: "hobby"},
+                {data: "id", title: "id", searchable: false, name:"id"},
+                {data: "name", title: "name", name:"name" },
+                {data: "age", title: "age", name:"age"},
+                {data: "hobby", title: "hobby", name:"hobby"},
             ],
         });
-    });
-    $("#search").on("click", function() {
-        table.ajax.reload();
+        $("#myTable_filter").attr("hidden", "hidden");
     });
 
-    $("#searchWhere").change(function(){
-        console.log($(this).val()); //value값 가져오기
-        searchWhere = $(this).val();
-    });
 </script>
 <body>
-    <select name="searchWhere" id="searchWhere" style="float: right">
+    <select name="searchType" id="searchType">
         <option value="name" selected>name</option>
         <option value="age">age</option>
         <option value="hobby">hobby</option>
     </select>
-    <table id="myTable" class="display" style="width:100%">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Hobby</th>
-        </tr>
-        </thead>
-    </table>
+    <input id="searchValue">
+    <button type="button" id="searchBtn">Search</button>
+    <table id="myTable"></table>
 </body>
+<script>
+    $("#searchType").change(function(){
+        searchType = $(this).val();
+    });
+
+    $("#searchBtn").click(function () {
+        const numCols = table.columns().nodes().length;
+        for(let i=0; i<numCols; i++) {
+            table.column(i).search('');
+        }
+        const searchValue = $("#searchValue").val();
+        table.column(searchType).search(searchValue).draw();
+    })
+</script>
 </html>

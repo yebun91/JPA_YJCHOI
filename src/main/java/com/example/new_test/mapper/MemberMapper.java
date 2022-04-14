@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface MemberMapper {
 @Mapper
-    List<MemberDto> findData(Long start, int length, String search, String culumn, String order, String searchWhere);
-    int findDataTotalCount(String search, String searchWhere);
+    List<MemberDto> findData(Long start, int length, String search, String culumn, String order, String searchType);
+    int findDataTotalCount(String search, String searchType);
 }
