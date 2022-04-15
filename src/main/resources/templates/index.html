@@ -21,6 +21,7 @@
             processing: true, //서버측 처리를 위해 테이블이 처리중 일때 '처리 중' 표시기의 표시를 활성화 또는 비활성화 한다.
             pageLength: 10, //한 페이지에 표시할 행의 개수
             ordering: true, // 컬럼별 정렬기능
+            responsive: true,
             language: {
                 emptyTable: "데이터가 없습니다.",
                 lengthMenu: "페이지당 _MENU_ 개씩 보기",
@@ -48,38 +49,39 @@
                 },
             },
             columns: [
-                {data: "id", title: "id", searchable: false, name:"id"},
-                {data: "name", title: "name", name:"name" },
-                {data: "age", title: "age", name:"age"},
-                {data: "hobby", title: "hobby", name:"hobby"},
+                {data: "id", title: "id", searchable: false},
+                {data: "name", title: "name"},
+                {data: "age", title: "age"},
+                {data: "hobby", title: "hobby"},
             ],
         });
+
         $("#myTable_filter").attr("hidden", "hidden");
+
+        $("#searchType").change(function(){
+            searchType = $(this).val();
+        });
+
+        $("#searchBtn").click(function () {
+            const numCols = table.columns().nodes().length;
+            for(let i=0; i<numCols; i++) {
+                table.column(i).search('');
+            }
+            const searchValue = $("#searchValue").val();
+            table.column(searchType).search(searchValue).draw();
+        })
     });
 
 </script>
 <body>
     <select name="searchType" id="searchType">
-        <option value="name" selected>name</option>
-        <option value="age">age</option>
-        <option value="hobby">hobby</option>
+        <option value="0">id</option>
+        <option value="1" selected>name</option>
+        <option value="2">age</option>
+        <option value="3">hobby</option>
     </select>
     <input id="searchValue">
     <button type="button" id="searchBtn">Search</button>
     <table id="myTable"></table>
 </body>
-<script>
-    $("#searchType").change(function(){
-        searchType = $(this).val();
-    });
-
-    $("#searchBtn").click(function () {
-        const numCols = table.columns().nodes().length;
-        for(let i=0; i<numCols; i++) {
-            table.column(i).search('');
-        }
-        const searchValue = $("#searchValue").val();
-        table.column(searchType).search(searchValue).draw();
-    })
-</script>
 </html>
