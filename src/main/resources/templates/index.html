@@ -7,7 +7,9 @@
     <title>Title</title>
     <link rel="stylesheet" type="text/css"
           href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 </head>
 <script>
     let table;
@@ -54,13 +56,10 @@
                 {data: "hobby", title: "hobby"},
             ],
         });
-
-        $("#myTable_filter").attr("hidden", "hidden");
-
         $("#searchType").change(function(){
             searchType = $(this).val();
         });
-
+        $("#myTable_filter").attr("hidden", "hidden");
         $("#searchBtn").click(function () {
             const numCols = table.columns().nodes().length;
             for(let i=0; i<numCols; i++) {
@@ -80,6 +79,15 @@
     </select>
     <input id="searchValue" onKeypress="javascript:if(event.keyCode==13) {$('#searchBtn').click()}">
     <button type="button" id="searchBtn">Search</button>
-    <table id="myTable"></table>
+    <table id="myTable" style="width: 100%">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>age</th>
+            <th>hobby</th>
+        </tr>
+        </thead>
+    </table>
 </body>
 </html>
