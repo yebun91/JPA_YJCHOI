@@ -35,12 +35,10 @@ public class MainRestController {
                 searchType = columns.get(i).getData(); //검색할 컬럼명
             }
         }
-        // 컬럼 이름을 가져오기 위해 몆 번째 컬럼인지 숫자를 가져옴 기본 0
+        // 컬럼 이름을 가져오기 위해 몆 번째 컬럼인지 숫자를 가져옴
         int columnNum = Integer.parseInt(requestBody.getOrder().get(0).get(DataTablesInput.OrderCriterias.column));
-
         // 어떤 컬럼을 기준으로 정렬할 것인지 컬럼 이름을 가져옴 컬럼들().get(culumnNum) 이용
         String column = requestBody.getColumns().get(columnNum).getData();
-
         // 순차 검색인지 역순 검색인지
         String order = requestBody.getOrder().get(0).get(DataTablesInput.OrderCriterias.dir);
 
