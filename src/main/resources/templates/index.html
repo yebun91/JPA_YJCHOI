@@ -79,7 +79,7 @@
         <option value="2">age</option>
         <option value="3">hobby</option>
     </select>
-    <input id="searchValue">
+    <input id="searchValue" onKeypress="javascript:if(event.keyCode==13) {$('#searchBtn').click()}">
     <button type="button" id="searchBtn">Search</button>
     <table id="myTable"></table>
 </body>
