@@ -26,7 +26,6 @@ public class MainRestController {
         int length = requestBody.getLength();
 
         HashMap<String, String> searchMap = new HashMap<>();
-
         List<Column> columns = requestBody.getColumns();
         for (int i = 0; i < columns.size(); i++) {
             String columnData = columns.get(i).getSearch().get(DataTablesInput.SearchCriterias.value);
