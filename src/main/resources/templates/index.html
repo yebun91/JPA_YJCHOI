@@ -17,12 +17,30 @@
 
     $(document).ready(function () {
         searchType = $('#searchType option:selected').val();
+
+        $('#myTable tfoot th').each( function () {
+            const title = $(this).text();
+            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        });
+
         table = $('#myTable').DataTable({
             serverSide: true, //데이터 서버사이드 처리 활성화.
             processing: true, //서버측 처리를 위해 테이블이 처리중 일때 '처리 중' 표시기의 표시를 활성화 또는 비활성화 한다.
             pageLength: 10, //한 페이지에 표시할 행의 개수
             ordering: true, // 컬럼별 정렬기능
             responsive: true,
+            initComplete: function () {
+                this.api().columns().every( function () {
+                    let that = this;
+                    $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                        if ( that.search() !== this.value ) {
+                            that
+                                .search( this.value )
+                                .draw();
+                        }
+                    });
+                });
+            },
             language: {
                 emptyTable: "데이터가 없습니다.",
                 lengthMenu: "페이지당 _MENU_ 개씩 보기",
@@ -45,21 +63,24 @@
                 dataType: 'json',
                 data: function(d){
                     // Object.assign(d,{"data": {"searchType": searchType}});
-                    // console.log(d);
+                    console.log(d);
                     return JSON.stringify(d);
                 },
             },
             columns: [
-                {data: "id", title: "id", searchable: false},
+                {data: "id", title: "id"},
                 {data: "name", title: "name"},
                 {data: "age", title: "age"},
                 {data: "hobby", title: "hobby"},
             ],
-        });
+        })
+
         $("#searchType").change(function(){
             searchType = $(this).val();
         });
-        $("#myTable_filter").attr("hidden", "hidden");
+
+         $("#myTable_filter").attr("hidden", "hidden");
+
         $("#searchBtn").click(function () {
             const numCols = table.columns().nodes().length;
             for(let i=0; i<numCols; i++) {
@@ -88,6 +109,14 @@
             <th>hobby</th>
         </tr>
         </thead>
+        <tfoot>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>age</th>
+            <th>hobby</th>
+        </tr>
+        </tfoot>
     </table>
 </body>
 </html>

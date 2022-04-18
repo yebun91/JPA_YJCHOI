@@ -8,18 +8,36 @@
         <result column="hobby" property="hobby" />
     </resultMap>
 
+    <sql id="searchWhere">
+        WHERE 1 = 1
+        <if test="searchMap != null and searchMap.size != 0">
+            AND
+            <foreach collection="searchMap" item="value" index="key" separator="and">
+                <choose>
+                    <when test="key != 'id' and key != 'age'" >
+                        ${key} LIKE CONCAT('%', #{value}, '%')
+                    </when>
+                    <when test="key == 'id' or key == 'age'" >
+                        ${key} = ${value}
+                    </when>
+                </choose>
+            </foreach>
+        </if>
+    </sql>
+
     <select id="findData" resultMap="MemberMap">
         SELECT * FROM yjchoi.member
-        WHERE ${searchType} LIKE CONCAT('%', #{search}, '%')
-        ORDER BY ${culumn} ${order}
+        <include refid="searchWhere"></include>
+        ORDER BY
+        <foreach collection="order" item="value" separator=",">
+            ${value}
+        </foreach>
         LIMIT #{length} OFFSET #{start}
     </select>
 
     <select id="findDataTotalCount" resultType="Integer">
         SELECT COUNT(id) FROM yjchoi.member
-        <if test="search != null and !search.equals('')">
-            WHERE ${searchType} LIKE CONCAT('%', #{search}, '%')
-        </if>
+        <include refid="searchWhere"></include>
     </select>
 </mapper>
 

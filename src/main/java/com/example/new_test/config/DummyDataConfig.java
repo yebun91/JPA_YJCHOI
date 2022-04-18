@@ -21,10 +21,9 @@ public class DummyDataConfig implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (!memberRepository.findById(1L).isPresent()) {
             for (int i = 0 ; i<100; i++){
-                int age = random.nextInt(100)+1;
                 Member member = memberRepository.save(
                         Member.builder()
-                                .age(age+"")
+                                .age(random.nextInt(100)+1)
                                 .hobby(hobby[random.nextInt(hobby.length)])
                                 .name(name[random.nextInt(name.length)]).build()
                 );

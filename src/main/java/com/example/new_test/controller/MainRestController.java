@@ -8,7 +8,10 @@ import com.example.new_test.mapper.MemberMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -22,30 +25,27 @@ public class MainRestController {
         Long start = requestBody.getStart();
         int length = requestBody.getLength();
 
-        // 검색하고 싶은 검색어
-        String search = "";
-        // 무엇을 기준으로 검색할 것인지  where id = '뫄뫄' 의 id
-        String searchType = "name";
+        HashMap<String, String> searchMap = new HashMap<>();
 
         List<Column> columns = requestBody.getColumns();
         for (int i = 0; i < columns.size(); i++) {
             String columnData = columns.get(i).getSearch().get(DataTablesInput.SearchCriterias.value);
             if(!columnData.equals("") && columnData != null){
-                search = columnData; // 검색어
-                searchType = columns.get(i).getData(); //검색할 컬럼명
+                searchMap.put(columns.get(i).getData(), columnData);
             }
         }
-        // 컬럼 이름을 가져오기 위해 몆 번째 컬럼인지 숫자를 가져옴
-        int columnNum = Integer.parseInt(requestBody.getOrder().get(0).get(DataTablesInput.OrderCriterias.column));
-        // 어떤 컬럼을 기준으로 정렬할 것인지 컬럼 이름을 가져옴 컬럼들().get(culumnNum) 이용
-        String column = requestBody.getColumns().get(columnNum).getData();
-        // 순차 검색인지 역순 검색인지
-        String order = requestBody.getOrder().get(0).get(DataTablesInput.OrderCriterias.dir);
 
-        // System.out.println("search : "+search+", culumn : "+column+", order : "+order+", searchType : "+ searchType);
+        ArrayList order = new ArrayList();
+        List<Map<DataTablesInput.OrderCriterias, String>> arrayOrder = requestBody.getOrder();
+        for (int i = 0; i < arrayOrder.size(); i++) {
+            String columnNum = arrayOrder.get(i).get(DataTablesInput.OrderCriterias.column);
+            String column = requestBody.getColumns().get(Integer.parseInt(columnNum)).getData();
+            String dir = arrayOrder.get(i).get(DataTablesInput.OrderCriterias.dir);
+            order.add(column+" "+dir);
+        }
 
-        List<MemberDto> data = memberMybatiseRepository.findData(start, length, search, column, order, searchType);
-        int total = memberMybatiseRepository.findDataTotalCount(search, searchType);
+        List<MemberDto> data = memberMybatiseRepository.findData(start, length, order, searchMap);
+        int total = memberMybatiseRepository.findDataTotalCount(searchMap);
 
         DataTablesOutput output = DataTablesOutput.builder()
                         .data(data)
