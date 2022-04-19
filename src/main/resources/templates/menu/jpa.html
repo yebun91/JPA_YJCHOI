@@ -2,75 +2,94 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout/default}">
 
 <th:block layout:fragment="css">
-    <!--/* datatable css*/-->
-    <link rel="stylesheet" media="screen, print" th:href="@{/DataTables/Responsive-2.2.9/css/responsive.dataTables.css}">
-    <link rel="stylesheet" media="screen, print" th:href="@{/DataTables/datatables.css}">
+    <!--/* datatable */-->
+    <link rel="stylesheet" media="screen, print" th:href="@{/css/datagrid/datatables/datatables.bundle.css}">
     <!--/* custom css */-->
+    <link id="base" rel="stylesheet" media="screen, print" th:href="@{/css/base.css}">
 </th:block>
 <!-- index.html 고유 스크립트 추가 -->
 <th:block layout:fragment="script">
     <!--/* datatable */-->
-    <script th:src="@{/DataTables/datatables.js}"></script>
-    <script th:src="@{/DataTables/Responsive-2.2.9/js/responsive.dataTables.js}"></script>
+    <script th:src="@{/js/datagrid/datatables/datatables.bundle.js}"></script>
+    <script th:src="@{/js/datagrid/datatables/datatables.export.js}"></script>
     <script th:inline="javascript">
         let table;
-        $(document).ready(function() {
+        let searchType;
+        $(document).ready(function () {
+            searchType = $('#searchType option:selected').val();
 
-            // $('#example tfoot th').each( function () {
-            //     var title = $(this).text();
-            //     $(this).html( '<input type="text" class="form-control" placeholder="Search '+title+'" />' );
-            // } );
+            $('#myTable tfoot th').each( function () {
+                const title = $(this).text();
+                $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+            });
 
-            //초기세팅
-            table = $('#example').DataTable({
+            table = $('#myTable').DataTable({
+                serverSide: true, //데이터 서버사이드 처리 활성화.
+                processing: true, //서버측 처리를 위해 테이블이 처리중 일때 '처리 중' 표시기의 표시를 활성화 또는 비활성화 한다.
+                pageLength: 10, //한 페이지에 표시할 행의 개수
+                ordering: true, // 컬럼별 정렬기능
                 responsive: true,
-                pageLength: 10,
-                processing: true,
-                serverSide: true,
+                initComplete: function () {
+                    this.api().columns().every( function () {
+                        let that = this;
+                        $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                            if ( that.search() !== this.value ) {
+                                that
+                                    .search( this.value )
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                language: {
+                    emptyTable: "데이터가 없습니다.",
+                    lengthMenu: "페이지당 _MENU_ 개씩 보기",
+                    info: "현재 _START_ - _END_ / _TOTAL_건",
+                    infoEmpty: "데이터 없음",
+                    infoFiltered: "( _MAX_건의 데이터에서 필터링됨 )",
+                    search: "",
+                    zeroRecords: "일치하는 데이터가 없습니다.",
+                    loadingRecords: "로딩중...",
+                    processing: "잠시만 기다려 주세요.",
+                    paginate: {
+                        next: "다음",
+                        previous: "이전",
+                    },
+                },
                 ajax: {
-                    url: '/selectByJpa',
-                    // url: '/select',
+                    url: '/searchJPA',
                     type: 'POST',
                     contentType: 'application/json',
                     dataType: 'json',
                     data: function(d){
-                        let inputName = d.search.value;
-                        Object.assign(d,{"bespokeParams": {"name":inputName}});
-                        console.error(">>> d >>>", d)
+                        // Object.assign(d,{"data": {"searchType": searchType}});
+                        console.log(d);
                         return JSON.stringify(d);
-                    }
+                    },
                 },
-                language: {
-                    "emptyTable": "NO DATA"
-                },
-                columns : [
-                    {data: "id"},
-                    {data: "name"},
-                    {data: "age"},
-                    {data: "hobby"}
+                columns: [
+                    {data: "id", title: "id"},
+                    {data: "name", title: "name"},
+                    {data: "age", title: "age"},
+                    {data: "hobby", title: "hobby"},
                 ],
-                initComplete: function () {
-                    // Apply the search
-                    // this.api().columns().every( function () {
-                    //     var that = this;
-                    //     $('input', this.footer()).on('keyup', function(key){
-                    //         if(key.keyCode==13){
-                    //             if(that.search() !== this.value){
-                    //                 that
-                    //                     .search(this.value)
-                    //                     .draw();
-                    //             }
-                    //         }
-                    //     } );
-                    // } );
+            })
+
+            $("#searchType").change(function(){
+                searchType = $(this).val();
+            });
+
+            $("#myTable_filter").attr("hidden", "hidden");
+
+            $("#searchBtn").click(function () {
+                const numCols = table.columns().nodes().length;
+                for(let i=0; i<numCols; i++) {
+                    table.column(i).search('');
                 }
-            });
-
-            $('#button-addon2').on("click", function(){
-                table.ajax.reload();
-            });
-
-        } );
+                const searchValue = $("#searchValue").val();
+                table.column(searchType).search(searchValue).draw();
+            })
+        });
     </script>
 </th:block>
 
@@ -92,8 +111,8 @@
                     <div class="panel-content">
                         <!--<input type="text" id="fullName" class="form-control" >-->
                         <!--<button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>-->
-                        <table id="example" class="table table-bordered table-hover table-striped w-100">
-                            <thead class="thead-themed">
+                        <table id="myTable" class="table table-bordered table-hover table-striped w-100">
+                            <thead>
                             <tr>
                                 <th>Id</th>
                                 <th>Name</th>
@@ -101,7 +120,7 @@
                                 <th>Hobby</th>
                             </tr>
                             </thead>
-                            <tfoot class="thead-themed">
+                            <tfoot>
                             <tr>
                                 <th>Id</th>
                                 <th>Name</th>

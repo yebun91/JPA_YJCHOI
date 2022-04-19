@@ -12,5 +12,5 @@ public class DataTablesOutput {
     private int draw;
     private int recordsTotal;
     private int recordsFiltered;
-    private List<MemberDto> data;
+    private List<Member> data;
 }

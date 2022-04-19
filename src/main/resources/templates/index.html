@@ -15,17 +15,15 @@
 </head>
 <script>
     let table;
-<<<<<<< HEAD
-
-=======
     let searchType;
->>>>>>> mybatis
     $(document).ready(function () {
         searchType = $('#searchType option:selected').val();
+
         $('#myTable tfoot th').each( function () {
             const title = $(this).text();
             $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
         });
+
         table = $('#myTable').DataTable({
             serverSide: true, //데이터 서버사이드 처리 활성화.
             processing: true, //서버측 처리를 위해 테이블이 처리중 일때 '처리 중' 표시기의 표시를 활성화 또는 비활성화 한다.
@@ -61,19 +59,14 @@
             },
             ajax: {
                 url: '/search',
-                type: 'GET',
+                type: 'POST',
                 contentType: 'application/json',
                 dataType: 'json',
                 data: function(d){
-<<<<<<< HEAD
-                  d.search = $('#search_text').val();
-=======
                     // Object.assign(d,{"data": {"searchType": searchType}});
                     console.log(d);
                     return JSON.stringify(d);
->>>>>>> mybatis
                 },
-              dataSrc: "",
             },
             columns: [
                 {data: "id", title: "id"},
@@ -87,7 +80,7 @@
             searchType = $(this).val();
         });
 
-         $("#myTable_filter").attr("hidden", "hidden");
+        $("#myTable_filter").attr("hidden", "hidden");
 
         $("#searchBtn").click(function () {
             const numCols = table.columns().nodes().length;

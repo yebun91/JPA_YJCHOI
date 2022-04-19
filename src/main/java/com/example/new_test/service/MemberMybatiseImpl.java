@@ -1,5 +1,6 @@
 package com.example.new_test.service;
 
+import com.example.new_test.entity.Member;
 import com.example.new_test.entity.MemberDto;
 import org.springframework.stereotype.Service;
 
