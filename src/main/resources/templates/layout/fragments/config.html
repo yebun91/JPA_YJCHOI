@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:fragment="configFragment">
+    <meta charset="UTF-8" />
+    <title>
+        YJCHOI EDU PROJECT
+    </title>
+    <meta name="description" content="Page Title">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!--/* 공통으로 쓰이는 css파일을넣는다. */-->
+
+    <link id="vendorsbundle" rel="stylesheet" media="screen, print" th:href="@{/css/vendors.bundle.css}">
+    <link id="appbundle" rel="stylesheet" media="screen, print" th:href="@{/css/app.bundle.css}">
+    <!--/*    <link id="mytheme" rel="stylesheet" media="screen, print" th:href=""> */-->
+    <link id="myskin" rel="stylesheet" media="screen, print" th:href="@{/css/skins/skin-master.css}">
+
+    <!--/* 컨텐츠페이지의 CSS 영역이 들어감 */-->
+    <th:block layout:fragment="css">
+    </th:block>
+</head>
+</html>

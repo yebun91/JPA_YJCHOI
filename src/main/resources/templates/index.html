@@ -5,24 +5,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" type="text/css"
-          href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.css"/>
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script th:src="@{/js/jquery-3.5.1.js}"></script>
+    <!--/* datatable js*/-->
+    <script th:src="@{/DataTables/datatables.js}"></script>
+    <script th:src="@{/DataTables/Responsive-2.2.9/js/responsive.dataTables.js}"></script>
+    <!--/* datatable css*/-->
+    <link rel="stylesheet" media="screen, print" th:href="@{/DataTables/Responsive-2.2.9/css/responsive.dataTables.css}">
+    <link rel="stylesheet" media="screen, print" th:href="@{/DataTables/datatables.css}">
 </head>
 <script>
     let table;
     let searchType;
-
     $(document).ready(function () {
         searchType = $('#searchType option:selected').val();
-
         $('#myTable tfoot th').each( function () {
             const title = $(this).text();
             $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
         });
-
         table = $('#myTable').DataTable({
             serverSide: true, //데이터 서버사이드 처리 활성화.
             processing: true, //서버측 처리를 위해 테이블이 처리중 일때 '처리 중' 표시기의 표시를 활성화 또는 비활성화 한다.

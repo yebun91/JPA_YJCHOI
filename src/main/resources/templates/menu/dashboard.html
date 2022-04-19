@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout/default}">
+
+<th:block layout:fragment="css">
+    <!--/* datatable css*/-->
+    <link rel="stylesheet" media="screen, print" th:href="@{/DataTables/Responsive-2.2.9/css/responsive.dataTables.css}">
+    <link rel="stylesheet" media="screen, print" th:href="@{/DataTables/datatables.css}">
+    <!--/* custom css */-->
+</th:block>
+<!-- index.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script">
+    <!--/* datatable */-->
+    <script th:src="@{/DataTables/datatables.js}"></script>
+    <script th:src="@{/DataTables/Responsive-2.2.9/js/responsive.dataTables.js}"></script>
+    <script th:inline="javascript">
+
+        let table;
+
+        $(document).ready(function() {
+
+            $('#example tfoot th').each( function () {
+                var title = $(this).text();
+                $(this).html( '<input type="text" class="form-control" placeholder="Search '+title+'" />' );
+            } );
+
+            //초기세팅
+            table = $('#example').DataTable({
+                responsive: true,
+                pageLength: 10,
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '/selectByJpa',
+                    // url: '/select',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: function(d){
+                        let inputName = $('#fullName').val();
+                        Object.assign(d,{"bespokeParams": {"name":inputName}});
+                        console.error(">>> d >>>", d)
+                        return JSON.stringify(d);
+                    }
+                },
+                language: {
+                    "emptyTable": "NO DATA"
+                },
+                columns : [
+                    {data: "id"},
+                    {data: "name"},
+                    {data: "age"},
+                    {data: "hobby"}
+                ],
+                initComplete: function () {
+                    // Apply the search
+                    this.api().columns().every( function () {
+                        var that = this;
+                        $('input', this.footer()).on('keyup', function(key){
+                            if(key.keyCode==13){
+                                if(that.search() !== this.value){
+                                    that
+                                        .search(this.value)
+                                        .draw();
+                                }
+                            }
+                        } );
+                    } );
+                }
+            });
+
+            $('#button-addon2').on("click", function(){
+                table.ajax.reload();
+            });
+
+        } );
+    </script>
+</th:block>
+
+<main layout:fragment="content" id="js-page-content" role="main" class="page-content">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item"><a href="javascript:void(0);"><span th:text="${headLine}"></span></a></li>
+        <li class="breadcrumb-item active"><span th:text="${subHeadLine}"></span></li>
+        <li class="position-absolute pos-top pos-right d-none d-sm-block"><span class="js-get-date"></span></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-hdr">
+                    <h2>
+                        <span th:text="${subHeadLine}"></span>
+                    </h2>
+                </div>
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        <!--<input type="text" id="fullName" class="form-control" >-->
+                        <!--<button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>-->
+                        <table id="example" class="table table-bordered table-hover table-striped w-100">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Hobby</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Hobby</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</html>

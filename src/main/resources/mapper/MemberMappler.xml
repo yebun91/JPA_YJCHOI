@@ -9,28 +9,25 @@
     </resultMap>
 
     <sql id="searchWhere">
-        <where>
-            <if test="searchMap != null and searchMap.size != 0">
-                AND
-                <foreach collection="searchMap" item="value" index="key" separator="and">
-                    ${key}::TEXT LIKE CONCAT('%', #{value}, '%')
-                </foreach>
-            </if>
-        </where>
+    <where>
+    <if test="searchMap != null and searchMap.size != 0">
+        AND
+        <foreach collection="searchMap" item="value" index="key" separator="and">
+            ${key}::TEXT LIKE CONCAT('%', #{value}, '%')
+        </foreach>
+    </if>
+    </where>
     </sql>
 
     <select id="findData" resultMap="MemberMap">
         SELECT * FROM yjchoi.member
         <include refid="searchWhere"></include>
-        ORDER BY
-        <foreach collection="order" item="value" separator=",">
-            ${value}
-        </foreach>
+        ORDER BY ${order}
         LIMIT #{length} OFFSET #{start}
     </select>
 
     <select id="findDataTotalCount" resultType="Integer">
-        SELECT COUNT(id) FROM yjchoi.member
+        SELECT COUNT(*) FROM yjchoi.member
         <include refid="searchWhere"></include>
     </select>
 </mapper>

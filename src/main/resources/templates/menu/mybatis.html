@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout/default}">
+
+<th:block layout:fragment="css">
+    <!--/* datatable */-->
+    <link rel="stylesheet" media="screen, print" th:href="@{/css/datagrid/datatables/datatables.bundle.css}">
+    <!--/* custom css */-->
+    <link id="base" rel="stylesheet" media="screen, print" th:href="@{/css/base.css}">
+</th:block>
+<!-- index.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script">
+    <!--/* datatable */-->
+    <script th:src="@{/js/datagrid/datatables/datatables.bundle.js}"></script>
+    <script th:src="@{/js/datagrid/datatables/datatables.export.js}"></script>
+    <script th:inline="javascript">
+        let table;
+        let searchType;
+        $(document).ready(function () {
+            searchType = $('#searchType option:selected').val();
+
+            $('#myTable tfoot th').each( function () {
+                const title = $(this).text();
+                $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+            });
+
+            table = $('#myTable').DataTable({
+                serverSide: true, //데이터 서버사이드 처리 활성화.
+                processing: true, //서버측 처리를 위해 테이블이 처리중 일때 '처리 중' 표시기의 표시를 활성화 또는 비활성화 한다.
+                pageLength: 10, //한 페이지에 표시할 행의 개수
+                ordering: true, // 컬럼별 정렬기능
+                responsive: true,
+                initComplete: function () {
+                    this.api().columns().every( function () {
+                        let that = this;
+                        $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                            if ( that.search() !== this.value ) {
+                                that
+                                    .search( this.value )
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                language: {
+                    emptyTable: "데이터가 없습니다.",
+                    lengthMenu: "페이지당 _MENU_ 개씩 보기",
+                    info: "현재 _START_ - _END_ / _TOTAL_건",
+                    infoEmpty: "데이터 없음",
+                    infoFiltered: "( _MAX_건의 데이터에서 필터링됨 )",
+                    search: "",
+                    zeroRecords: "일치하는 데이터가 없습니다.",
+                    loadingRecords: "로딩중...",
+                    processing: "잠시만 기다려 주세요.",
+                    paginate: {
+                        next: "다음",
+                        previous: "이전",
+                    },
+                },
+                ajax: {
+                    url: '/search',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: function(d){
+                        // Object.assign(d,{"data": {"searchType": searchType}});
+                        console.log(d);
+                        return JSON.stringify(d);
+                    },
+                },
+                columns: [
+                    {data: "id", title: "id"},
+                    {data: "name", title: "name"},
+                    {data: "age", title: "age"},
+                    {data: "hobby", title: "hobby"},
+                ],
+            })
+
+            $("#searchType").change(function(){
+                searchType = $(this).val();
+            });
+
+            $("#myTable_filter").attr("hidden", "hidden");
+
+            $("#searchBtn").click(function () {
+                const numCols = table.columns().nodes().length;
+                for(let i=0; i<numCols; i++) {
+                    table.column(i).search('');
+                }
+                const searchValue = $("#searchValue").val();
+                table.column(searchType).search(searchValue).draw();
+            })
+        });
+    </script>
+</th:block>
+
+<main layout:fragment="content" id="js-page-content" role="main" class="page-content">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item"><a href="javascript:void(0);"><span th:text="${headLine}"></span></a></li>
+        <li class="breadcrumb-item active"><span th:text="${subHeadLine}"></span></li>
+        <li class="position-absolute pos-top pos-right d-none d-sm-block"><span class="js-get-date"></span></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-hdr">
+                    <h2>
+                        <span th:text="${subHeadLine}"></span>
+                    </h2>
+                </div>
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        <!--<input type="text" id="fullName" class="form-control" >-->
+                        <!--<button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>-->
+                        <table id="myTable" class="table table-bordered table-hover table-striped w-100">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Hobby</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Hobby</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</html>

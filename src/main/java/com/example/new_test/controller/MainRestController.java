@@ -6,6 +6,7 @@ import com.example.new_test.entity.DataTablesOutput;
 import com.example.new_test.entity.MemberDto;
 import com.example.new_test.mapper.MemberMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -34,14 +35,15 @@ public class MainRestController {
             }
         }
 
-        ArrayList order = new ArrayList();
+        ArrayList orderList = new ArrayList();
         List<Map<DataTablesInput.OrderCriterias, String>> arrayOrder = requestBody.getOrder();
         for (int i = 0; i < arrayOrder.size(); i++) {
             String columnNum = arrayOrder.get(i).get(DataTablesInput.OrderCriterias.column);
             String column = requestBody.getColumns().get(Integer.parseInt(columnNum)).getData();
             String dir = arrayOrder.get(i).get(DataTablesInput.OrderCriterias.dir);
-            order.add(column+" "+dir);
+            orderList.add(column+" "+dir);
         }
+        String order = String.join(", ", orderList);
 
         List<MemberDto> data = memberMybatiseRepository.findData(start, length, order, searchMap);
         int total = memberMybatiseRepository.findDataTotalCount(searchMap);

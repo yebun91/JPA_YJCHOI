@@ -1,0 +1,397 @@
+
+.text_color_gray { color:#868686;}
+.text_color_blue { color:#0089cf;}
+.text_color_red { color:#d9534f; }
+
+.font-hover-white:hover .count { color:#fff; }
+
+.no-margin { margin:0; }
+.no-padding { padding:0; }
+
+.padding-4 { padding-top:4px; padding-left:4px; }
+
+.recent-event { cursor:pointer; }
+
+.c3 svg { fill:#a5abb1; }
+
+.no-image { background:url('/img/demo/noimage.png') center / contain no-repeat; }
+
+.violation-img:hover { cursor:pointer; }
+
+/* 위반 사진 팝업 - 이미지 리스트 */
+.image-list-sm { width:100%; margin-top:10px; }
+.image-list-sm .prev { width:20px; height:100%; float:left; text-align:center; cursor:pointer; }
+.image-list-sm .prev span { width:100%; text-align:center; }
+.image-list-sm .next { width:20px; height:100%; float:right; text-align:center; cursor:pointer; }
+.image-list-sm .next span { width:100%; text-align:center; }
+.image-list-sm ul { float:left; width:100%; list-style:none; padding-inline-start:0px; overflow-x:hidden; text-align:center; margin-bottom:0; }
+.image-list-sm ul li { display: inline-block; width:calc(100% / 8 - 10px); min-width:60px; margin:5px; }
+
+/* DataTable custom */
+table.dataTable tbody tr.selected {
+    color: #ffa931 !important;
+    font-weight:bold;
+}
+table.dataTable tbody td {
+    vertical-align: middle;
+}
+.dt-align-center { text-align:center; }
+
+/* DataTable image preview */
+.preview-wrap { width:50px; height:50px; position:relative; margin:0 auto; background:#505050; }
+.preview-wrap .preview-img { width:100%; height:100%; display:block; object-fit: contain; }
+
+/* cropper */
+.img-container,
+.img-preview {
+    background-color: #f7f7f7;
+    text-align: center;
+    width: 100%;
+}
+
+.img-container {
+    margin-bottom: 1rem;
+    max-height: 497px;
+    min-height: 200px;
+}
+
+@media (min-width: 768px) {
+    .img-container {
+        min-height: 497px;
+    }
+}
+
+.img-container > img {
+    max-width: 100%;
+}
+
+.docs-preview {
+    margin-right: -1rem;
+}
+
+.img-preview {
+    float: left;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    overflow: hidden;
+}
+
+.img-preview > img {
+    max-width: 100%;
+}
+
+.preview-lg {
+    height: 9rem;
+    width: 16rem;
+}
+
+.preview-md {
+    height: 4.5rem;
+    width: 8rem;
+}
+
+.preview-sm {
+    height: 2.25rem;
+    width: 4rem;
+}
+
+.preview-xs {
+    height: 1.125rem;
+    margin-right: 0;
+    width: 2rem;
+}
+
+.docs-data > .input-group {
+    margin-bottom: 0.5rem;
+}
+
+.docs-data .input-group-prepend .input-group-text {
+    min-width: 4rem;
+}
+
+.docs-data .input-group-append .input-group-text {
+    min-width: 3rem;
+}
+
+.docs-buttons > .btn,
+.docs-buttons > .btn-group,
+.docs-buttons > .form-control {
+    margin-bottom: 0.5rem;
+    margin-right: 0.25rem;
+}
+
+.docs-toggles > .btn,
+.docs-toggles > .btn-group,
+.docs-toggles > .dropdown {
+    margin-bottom: 0.5rem;
+}
+
+.docs-tooltip {
+    display: block;
+    margin: -0.5rem -0.75rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.docs-tooltip > .icon {
+    margin: 0 -0.25rem;
+    vertical-align: top;
+}
+
+.tooltip-inner {
+    white-space: normal;
+}
+
+.btn-upload .tooltip-inner,
+.btn-toggle .tooltip-inner {
+    white-space: nowrap;
+}
+
+.btn-toggle {
+    padding: 0.5rem;
+}
+
+.btn-toggle > .docs-tooltip {
+    margin: -0.5rem;
+    padding: 0.5rem;
+}
+
+@media (max-width: 400px) {
+    .btn-group-crop {
+        margin-right: -1rem !important;
+    }
+
+    .btn-group-crop > .btn {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    .btn-group-crop .docs-tooltip {
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
+
+.docs-options .dropdown-menu {
+    width: 100%;
+}
+
+.docs-options .dropdown-menu > li {
+    font-size: 0.875rem;
+    padding: 0.125rem 1rem;
+}
+
+.docs-options .dropdown-menu .form-check-label {
+    display: block;
+}
+
+.docs-cropped .modal-body {
+    text-align: center;
+}
+
+.docs-cropped .modal-body > img,
+.docs-cropped .modal-body > canvas {
+    max-width: 100%;
+}
+
+/* context menu */
+.contextmenu {
+    display: none;
+    position: absolute;
+    width: 100px;
+    margin: 0;
+    padding: 0;
+    background: #FFFFFF;
+    border-radius: 5px;
+    list-style: none;
+    box-shadow:
+            0 15px 35px rgba(50,50,90,0.1),
+            0 5px 15px rgba(0,0,0,0.07);
+    overflow: hidden;
+    z-index: 999999;
+}
+
+.contextmenu li {
+    border-left: 3px solid transparent;
+    transition: ease .2s;
+    border-top: 1px solid #ccc;
+}
+.contextmenu li:first-child {
+    border-top: 0px;
+}
+
+.contextmenu li div {
+    display: block;
+    padding: 10px;
+    color: #000 !important;
+    text-decoration: none;
+    transition: ease .2s;
+}
+
+.contextmenu li:hover {
+    background: #2196F3;
+    cursor:pointer;
+}
+
+.contextmenu li:hover div {
+    color: #FFFFFF !important;
+}
+
+/* breadcrumb - 라벨링 status step */
+.breadcrumb-holder {
+}
+
+.breadcrumb-holder ul {
+    display: flex;
+    list-style: none;
+}
+
+.breadcrumb-holder li a, .breadcrumb-holder li a:link, .breadcrumb-holder li a:visited {
+    text-decoration: none;
+    display: block;
+}
+
+/* Underlined breadcrumb styles */
+
+.underlined-breadcrumbs li a, .underlined-breadcrumbs li a:link, .underlined-breadcrumbs li a:visited {
+    padding: 7px 10px;
+    border-bottom: 2px solid #cecece;
+    position: relative;
+}
+
+.underlined-breadcrumbs li a:before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid white;
+    border-radius: 50%;
+    background: #cecece;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -5px)
+}
+
+.underlined-breadcrumbs li a:hover, .underlined-breadcrumbs li.current a {
+    border-bottom: 2px solid #85c7ff;
+    background: #2196f3;
+    color: white !important;
+    font-weight: bold;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+
+.underlined-breadcrumbs li a:hover:before, .underlined-breadcrumbs li.current a:before {
+    background: #85c7ff;
+}
+
+
+/* 흐르는 텍스트 */
+.marquee {
+    padding:0.5em 0;
+    overflow:hidden;
+    margin-bottom:10px;
+    position:relative;
+}
+.marquee p:hover {
+    -moz-animation-play-state: paused;
+    -webkit-animation-play-state: paused;
+    animation-play-state: paused;
+}
+.marquee p:after {
+    content:"";
+    white-space:nowrap;
+    padding-right:50px;
+}
+
+.marquee p {
+    margin:0;
+    padding-left:100%;
+    display:inline-block;
+    white-space:nowrap;
+    -webkit-animation-name:marquee;
+    -webkit-animation-timing-function:linear;
+    -webkit-animation-duration:20s;
+    -webkit-animation-iteration-count:infinite;
+    -moz-animation-name:marquee;
+    -moz-animation-timing-function:linear;
+    -moz-animation-duration:20s;
+    -moz-animation-iteration-count:infinite;
+    -ms-animation-name:marquee;
+    -ms-animation-timing-function:linear;
+    -ms-animation-duration:20s;
+    -ms-animation-iteration-count:infinite;
+    -o-animation-name:marquee;
+    -o-animation-timing-function:linear;
+    -o-animation-duration:20s;
+    -o-animation-iteration-count:infinite;
+    animation-name:marquee;
+    animation-timing-function:linear;
+    animation-duration:20s;
+    animation-iteration-count:infinite;
+}
+@-webkit-keyframes marquee {
+    from   { -webkit-transform: translate(0%);}
+    99%,to { -webkit-transform: translate(-100%);}
+}
+@-moz-keyframes marquee {
+    from   { -moz-transform: translate(0%);}
+    99%,to { -moz-transform: translate(-100%);}
+}
+@-ms-keyframes marquee {
+    from   { -ms-transform: translate(0%);}
+    99%,to { -ms-transform: translate(-100%);}
+}
+@-o-keyframes marquee {
+    from   { -o-transform: translate(0%);}
+    99%,to { -o-transform: translate(-100%);}
+}
+@keyframes marquee {
+    from   { transform: translate(0%);}
+    99%,to { transform: translate(-100%);}
+}
+
+/* 반려 사유 */
+.wrap-msg-denied { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer; }
+.wrap-msg-denied:hover { text-decoration: underline; }
+
+/* scroll custom */
+.scroll-custom {
+    overflow-y: auto;
+}
+
+/* 스크롤바 설정*/
+.scroll-type::-webkit-scrollbar{
+    width: 8px;
+}
+
+/* 스크롤바 막대 설정*/
+.scroll-type::-webkit-scrollbar-thumb{
+    height: 17%;
+    background-color: rgba(101,101,101,0.4);
+    border-radius: 10px;
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.scroll-type::-webkit-scrollbar-track{
+    background-color: rgba(101,101,101,0.4);
+}
+
+/* 깜박임 효과 */
+@keyframes blink-effect {
+    50% {
+        opacity: 0;
+    }
+}
+
+.blink {
+    animation: blink-effect 1s step-end infinite;
+
+    /*
+    animation-name: blink-effect;
+    animation-duration: 1s;
+    animation-iteration-count:infinite;
+    animation-timing-function:step-end;
+    */
+}
