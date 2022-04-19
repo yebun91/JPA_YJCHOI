@@ -2,20 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.new_test.mapper.MemberMapper">
     <resultMap id="MemberMap" type="com.example.new_test.entity.MemberDto">
-        <result column="mem_id" property="id" />
+        <result column="id" property="id" />
         <result column="name" property="name" />
         <result column="age" property="age" />
         <result column="hobby" property="hobby" />
     </resultMap>
 
+    <sql id="searchWhere">
+    <where>
+    <if test="searchMap != null and searchMap.size != 0">
+        AND
+        <foreach collection="searchMap" item="value" index="key" separator="and">
+            ${key}::TEXT LIKE CONCAT('%', #{value}, '%')
+        </foreach>
+    </if>
+    </where>
+    </sql>
+
     <select id="findData" resultMap="MemberMap">
-        SELECT * FROM test_schema.test_member
-        WHERE name LIKE CONCAT('%', #{search}, '%')
+        SELECT * FROM yjchoi.member
+        <include refid="searchWhere"></include>
+        ORDER BY ${order}
         LIMIT #{length} OFFSET #{start}
     </select>
 
-    <select id="findAll" resultMap="MemberMap">
-        SELECT * FROM test_schema.test_member
+    <select id="findDataTotalCount" resultType="Integer">
+        SELECT COUNT(*) FROM yjchoi.member
+        <include refid="searchWhere"></include>
     </select>
 </mapper>
 

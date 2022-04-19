@@ -5,53 +5,126 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" type="text/css"
-          href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.css"/>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.js"></script>
+    <script th:src="@{/js/jquery-3.5.1.js}"></script>
+    <!--/* datatable js*/-->
+    <script th:src="@{/DataTables/datatables.js}"></script>
+    <script th:src="@{/DataTables/Responsive-2.2.9/js/responsive.dataTables.js}"></script>
+    <!--/* datatable css*/-->
+    <link rel="stylesheet" media="screen, print" th:href="@{/DataTables/Responsive-2.2.9/css/responsive.dataTables.css}">
+    <link rel="stylesheet" media="screen, print" th:href="@{/DataTables/datatables.css}">
 </head>
 <script>
     let table;
+<<<<<<< HEAD
 
+=======
+    let searchType;
+>>>>>>> mybatis
     $(document).ready(function () {
+        searchType = $('#searchType option:selected').val();
+        $('#myTable tfoot th').each( function () {
+            const title = $(this).text();
+            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        });
         table = $('#myTable').DataTable({
             serverSide: true, //데이터 서버사이드 처리 활성화.
             processing: true, //서버측 처리를 위해 테이블이 처리중 일때 '처리 중' 표시기의 표시를 활성화 또는 비활성화 한다.
-            pageLength: 15, //한 페이지에 표시할 행의 개수
-            searching: false,
+            pageLength: 10, //한 페이지에 표시할 행의 개수
+            ordering: true, // 컬럼별 정렬기능
+            responsive: true,
+            initComplete: function () {
+                this.api().columns().every( function () {
+                    let that = this;
+                    $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                        if ( that.search() !== this.value ) {
+                            that
+                                .search( this.value )
+                                .draw();
+                        }
+                    });
+                });
+            },
+            language: {
+                emptyTable: "데이터가 없습니다.",
+                lengthMenu: "페이지당 _MENU_ 개씩 보기",
+                info: "현재 _START_ - _END_ / _TOTAL_건",
+                infoEmpty: "데이터 없음",
+                infoFiltered: "( _MAX_건의 데이터에서 필터링됨 )",
+                search: "",
+                zeroRecords: "일치하는 데이터가 없습니다.",
+                loadingRecords: "로딩중...",
+                processing: "잠시만 기다려 주세요.",
+                paginate: {
+                    next: "다음",
+                    previous: "이전",
+                },
+            },
             ajax: {
                 url: '/search',
                 type: 'GET',
                 contentType: 'application/json',
                 dataType: 'json',
                 data: function(d){
+<<<<<<< HEAD
                   d.search = $('#search_text').val();
+=======
+                    // Object.assign(d,{"data": {"searchType": searchType}});
+                    console.log(d);
+                    return JSON.stringify(d);
+>>>>>>> mybatis
                 },
               dataSrc: "",
             },
             columns: [
-                {data: "id"},
-                {data: "name"},
-                {data: "age"},
-                {data: "hobby"},
+                {data: "id", title: "id"},
+                {data: "name", title: "name"},
+                {data: "age", title: "age"},
+                {data: "hobby", title: "hobby"},
             ],
+        })
+
+        $("#searchType").change(function(){
+            searchType = $(this).val();
         });
+
+         $("#myTable_filter").attr("hidden", "hidden");
+
+        $("#searchBtn").click(function () {
+            const numCols = table.columns().nodes().length;
+            for(let i=0; i<numCols; i++) {
+                table.column(i).search('');
+            }
+            const searchValue = $("#searchValue").val();
+            table.column(searchType).search(searchValue).draw();
+        })
     });
-    $("#search").on("click", function() {
-        table.ajax.reload();
-    });
+
 </script>
 <body>
-    <input type="text" id="search_text" onKeyPress="if( event.keyCode==13 ){table.ajax.reload()}">
-    <button type="button" id="search">검색</button>
-    <table id="myTable" class="display" style="width:100%">
+    <select name="searchType" id="searchType">
+        <option value="1" selected>name</option>
+        <option value="2">age</option>
+        <option value="3">hobby</option>
+    </select>
+    <input id="searchValue" onKeypress="javascript:if(event.keyCode==13) {$('#searchBtn').click()}">
+    <button type="button" id="searchBtn">Search</button>
+    <table id="myTable" style="width: 100%">
         <thead>
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Hobby</th>
+            <th>id</th>
+            <th>name</th>
+            <th>age</th>
+            <th>hobby</th>
         </tr>
         </thead>
+        <tfoot>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>age</th>
+            <th>hobby</th>
+        </tr>
+        </tfoot>
     </table>
 </body>
 </html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<aside th:fragment="sidebarFragment" class="page-sidebar">
+    <div class="page-logo">
+        <!--/*img th:src="@{/img/logo.png}" alt="UniTraffic" aria-roledescription="logo"*/-->
+        <span class="page-logo-text mr-1 fw-500">YJCHOI EDU PROJECT</span>
+    </div>
+    <!--/* BEGIN PRIMARY NAVIGATION */-->
+    <nav id="js-primary-nav" class="primary-nav" role="navigation">
+        <div class="nav-filter">
+            <div class="position-relative">
+                <input type="text" id="nav_filter_input" placeholder="Filter menu" class="form-control" tabindex="0">
+                <a href="#" onclick="return false;" class="btn-primary btn-search-close js-waves-off" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar">
+                    <i class="fal fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <div class="info-card">
+            <!--/* 로그인 유저에 따라 유저 이미지 변경 */-->
+            <img th:src="@{/img/poc/yuju.jpg}" class="rounded-circle profile-image" alt="logo">
+            <div class="info-card-text d-flex">
+                <a href="#" class="d-flex align-items-center text-white">
+                    <span class="text-truncate text-truncate-sm d-inline-block">
+<!--                        <span th:text="${#authentication.name}"></span>-->
+                        <span th:text="YJCHOI"></span>
+                    </span>
+                </a>
+<!--                <a href="#" id="change_password" class="ml-2 btn btn-outline-danger btn-icon rounded-circle waves-effect waves-themed">-->
+<!--                    <i class="fal fa-key"></i>-->
+<!--                </a>-->
+            </div>
+            <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
+                <i class="fal fa-angle-down"></i>
+            </a>
+        </div>
+        <!--/*
+        TIP: The menu items are not auto translated. You must have a residing lang file associated with the menu saved inside dist/media/data with reference to each 'data-i18n' attribute.
+        */-->
+        <ul id="js-nav-menu" class="nav-menu">
+            <li class="nav-title">DATABASES</li>
+            <li class="">
+                <a th:href="@{/}" title="mybatis" data-filter-tags="mybatis">
+                    <i class="fal fa-database"></i>
+                    <span class="nav-link-text">Mybatis</span>
+                </a>
+            </li>
+            <li class="">
+                <a th:href="@{/jpa}" title="jpa" data-filter-tags="jpa">
+                    <i class="fal fa-database"></i>
+                    <span class="nav-link-text">JPA+QueryDSL</span>
+                </a>
+            </li>
+        </ul>
+        <div class="filter-message js-filter-message bg-success-600"></div>
+    </nav>
+    <!--/* END PRIMARY NAVIGATION */-->
+    <!--/* NAV FOOTER */-->
+    <div class="nav-footer shadow-top">
+    </div>
+    <!--/* END NAV FOOTER */-->
+</aside>
+</html>

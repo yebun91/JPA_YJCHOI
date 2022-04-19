@@ -3,7 +3,11 @@ package com.example.new_test.config;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
 
-// package 전체를 mapper로 사용할 때 사용하기 위해 남겨둠
+/*
+ * hjkim
+ * MapperScan 모든 패키지를 mapper로 삼기 위한 설정이 있을수 있으므로 남겨둠
+ * */
+
 @Configuration
 @MapperScan(basePackages = "com.example.new_test.mapper")
 public class PostgreConfig {
