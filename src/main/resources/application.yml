@@ -28,3 +28,6 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
+# 서버포트 변경
+server:
+  port: 8081
