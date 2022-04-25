@@ -468,6 +468,9 @@ html body {
       -webkit-box-shadow: 0 0 0 1px rgba(121, 153, 50, 0.8);
               box-shadow: 0 0 0 1px rgba(121, 153, 50, 0.8);
       border: 1px solid rgba(121, 153, 50, 0.8); }
+/*  .nav-menu li a:active {
+
+  }*/
   .nav-menu li a:focus {
     color: white; }
     .nav-menu li a:focus .badge {

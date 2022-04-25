@@ -1,9 +1,13 @@
 package com.example.new_test.controller;
 
 import com.example.new_test.entity.*;
+import com.example.new_test.entity.QMember;
 import com.example.new_test.mapper.MemberMapper;
 import com.example.new_test.repository.MemberRepository;
 import com.example.new_test.repository.QMemberRepository;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.PathBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,9 +26,7 @@ import java.util.Map;
 public class MainRestController {
 
     private MemberMapper memberMybatiseRepository;
-    private MemberRepository memberRepository;
     private QMemberRepository qMemberRepository;
-    private EntityManager em;
 
     @PostMapping("/search")
     public DataTablesOutput search(@RequestBody DataTablesInput requestBody) {
@@ -79,75 +81,36 @@ public class MainRestController {
             }
         }
 
-        ArrayList orderList = new ArrayList();
-        List<Map<DataTablesInput.OrderCriterias, String>> arrayOrder = requestBody.getOrder();
-        for (int i = 0; i < arrayOrder.size(); i++) {
-            String columnNum = arrayOrder.get(i).get(DataTablesInput.OrderCriterias.column);
-            String column = requestBody.getColumns().get(Integer.parseInt(columnNum)).getData();
-            String dir = arrayOrder.get(i).get(DataTablesInput.OrderCriterias.dir);
-//            orderList.add(column+" "+dir);
-            orderList.add(column);
+        int page = start.intValue() / length;
+        HashMap<String, String> orderMap = new HashMap<>();
+        List<Sort.Order> orderList = new ArrayList<>();
+
+        for(Map<DataTablesInput.OrderCriterias, String> orderInfo : requestBody.getOrder()){
+            Sort.Direction direction = Sort.Direction.ASC;
+            if(orderInfo.get(DataTablesInput.OrderCriterias.dir).equals("desc"))
+                direction = Sort.Direction.DESC;
+            String orderColumnNum = orderInfo.get(DataTablesInput.OrderCriterias.column);
+            int columnIdx = 0;
+            try{
+                columnIdx = Integer.parseInt(orderColumnNum);
+            } catch (NumberFormatException e) {
+                //do Nothing
+            }
+            String orderColumn = requestBody.getColumns().get(columnIdx).getData();
+            orderList.add(new Sort.Order(direction, orderColumn));
         }
-        String order = String.join(", ", orderList);
+        Sort sort = Sort.by(orderList);
+        Pageable pageable1 = PageRequest.of(page, length, sort);
 
-        String list = "SELECT mb FROM Member mb " +
-                "ORDER BY "+order;
-
-        List<Member> member = em.createQuery(list, Member.class)
-                .setFirstResult(start.intValue())
-                .setMaxResults(length)
-                .getResultList();
-        String count = "SELECT COUNT(mb.id) FROM Member mb";
-        int total = em.createQuery(count, Long.class).getSingleResult().intValue();
-
+        Page<Member> data = qMemberRepository.searchQueryDSL(searchMap, pageable1, orderMap);
+        int total = (int)data.getTotalElements();
         DataTablesOutput output = DataTablesOutput.builder()
                 .draw(draw)
                 .recordsFiltered(total)
                 .recordsTotal(total)
-                .data(member)
+                .data(data.getContent())
                 .build();
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        int page = start.intValue() / length;
-        List<Member> data;
-        Pageable pageable = PageRequest.of(page, length, Sort.Direction.ASC,"id");
-
-        if(searchMap.get("name")!=null){
-            data = memberRepository.findByNameContains(searchMap.get("name"), pageable);
-        }else{
-            data = memberRepository.findByNameContains("", pageable);
-        }
-
-        DataTablesOutput output2 = DataTablesOutput.builder()
-                .draw(draw)
-                .recordsFiltered(total)
-                .recordsTotal(total)
-                .data(data)
-                .build();
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /*HashMap<String, String> orderMap = new HashMap<>();
-        for (int i = 0; i < arrayOrder.size(); i++) {
-            String columnNum = arrayOrder.get(i).get(DataTablesInput.OrderCriterias.column);
-            String column = requestBody.getColumns().get(Integer.parseInt(columnNum)).getData();
-            String dir = arrayOrder.get(i).get(DataTablesInput.OrderCriterias.dir);
-            orderMap.put(column, dir);
-        }
-
-        Sort sort = Sort.by(orderList);
-        Pageable pageable1 = PageRequest.of(page, length, sort);
-
-        Page<Member> data2 = qMemberRepository.searchQueryDSL(searchMap, pageable1, orderMap);
-
-        DataTablesOutput output3 = DataTablesOutput.builder()
-                .draw(draw)
-                .recordsFiltered(total)
-                .recordsTotal(total)
-                .data(data2.getContent())
-                .build();*/
-
-        return output2;
-
+        return output;
     }
 }

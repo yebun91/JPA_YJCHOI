@@ -27,17 +27,13 @@ public class QMemberRepository {
     public Page<Member> searchQueryDSL(HashMap<String, String> info, Pageable pageable, HashMap<String, String> order) {
         QMember member = QMember.member;
         JPAQuery<Member> query = jpaQueryFactory.selectFrom(member)
-                .where(containId(info.get("id"), member),
-                        containName(info.get("name"), member),
-                        containAge(info.get("age"), member),
+                .where(containName(info.get("name"), member),
                         containHobby(info.get("hobby"), member))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
         JPAQuery<Long> countQuery = jpaQueryFactory.select(member.count()).from(member)
-                .where(containId(info.get("id"), member),
-                        containName(info.get("name"), member),
-                        containAge(info.get("age"), member),
+                .where(containName(info.get("name"), member),
                         containHobby(info.get("hobby"), member));
 
         for (Sort.Order o : pageable.getSort()) {
