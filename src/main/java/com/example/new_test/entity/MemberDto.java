@@ -6,8 +6,5 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class MemberDto {
-    private Long id;
-    private int age;
-    private String hobby;
-    private String name;
+
 }

@@ -13,3 +13,6 @@ pluginManagement {
     }
 }
 rootProject.name = 'new_test'
+include 'tcp'
+include 'tcp'
+
